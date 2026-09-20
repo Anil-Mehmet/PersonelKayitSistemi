@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Giriş Yap";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+@if (ViewBag.Hata != null)
+{
+    <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <span>@ViewBag.Hata</span>
+    </div>
+}
+
+<form method="post" class="auth-form">
+    <div class="form-group mb-3">
+        <label class="form-label">E-posta</label>
+        <div class="input-with-icon">
+            <i class="bi bi-envelope"></i>
+            <input type="email" name="email" class="form-control" placeholder="ornek@sirket.com" required autofocus />
+        </div>
+    </div>
+
+    <div class="form-group mb-4">
+        <label class="form-label">Şifre</label>
+        <div class="input-with-icon">
+            <i class="bi bi-lock"></i>
+            <input type="password" name="sifre" class="form-control" placeholder="••••••••" required />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 auth-submit">
+        Giriş Yap
+        <i class="bi bi-arrow-right ms-1"></i>
+    </button>
+</form>

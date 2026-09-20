@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Giriş/Çıkış Kiosk";
+    ViewData["ActivePage"] = "GirisCikis";
+    Layout = Context.Session.GetString("AdminEmail") != null
+        ? "~/Views/Shared/_LayoutAdmin.cshtml"
+        : "~/Views/Shared/_LayoutPersonel.cshtml";
+}
+
+@{
+    string mesajMetni = ViewBag.Mesaj != null ? ViewBag.Mesaj.ToString() : "";
+    string durumSinifi = "kiosk-result-neutral";
+    string durumIkon = "bi-info-circle";
+
+    if (mesajMetni.Contains("GİRİŞ"))
+    {
+        durumSinifi = "kiosk-result-success";
+        durumIkon = "bi-box-arrow-in-right";
+    }
+    else if (mesajMetni.Contains("ÇIKIŞ"))
+    {
+        durumSinifi = "kiosk-result-warning";
+        durumIkon = "bi-box-arrow-left";
+    }
+    else if (mesajMetni.Contains("Hata"))
+    {
+        durumSinifi = "kiosk-result-danger";
+        durumIkon = "bi-exclamation-circle";
+    }
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Giriş / Çıkış</h2>
+    </div>
+</div>
+
+<div class="kiosk-wrapper">
+    <div class="kiosk-card">
+        <div class="kiosk-icon">
+            <i class="bi bi-upc-scan"></i>
+        </div>
+
+        <form asp-action="IslemYap" asp-controller="GirisCikis" method="post" class="kiosk-form">
+            <input type="text"
+                   class="kiosk-input"
+                   placeholder="Barkod okutun..."
+                   name="barkodKodu"
+                   required
+                   autofocus
+                   autocomplete="off" />
+
+            <button type="submit" class="btn btn-primary kiosk-submit">
+                <i class="bi bi-check-lg me-1"></i>Gönder
+            </button>
+        </form>
+
+        @if (!string.IsNullOrWhiteSpace(mesajMetni))
+        {
+            <div class="kiosk-result @durumSinifi" id="kioskResult">
+                <i class="bi @durumIkon"></i>
+                <span>@mesajMetni</span>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var messageArea = document.getElementById('kioskResult');
+            if (messageArea) {
+                setTimeout(function () {
+                    messageArea.style.opacity = '0';
+                    setTimeout(() => messageArea.style.display = 'none', 500);
+                }, 10000);
+            }
+        });
+    </script>
+}

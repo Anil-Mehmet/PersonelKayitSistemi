@@ -1,0 +1,61 @@
+﻿@model PersonelKayitSistemi.Models.Personel
+
+@{
+    ViewData["Title"] = "Personel Düzenle";
+    ViewData["ActivePage"] = "Personel";
+    Layout = Context.Session.GetString("AdminEmail") != null
+        ? "~/Views/Shared/_LayoutAdmin.cshtml"
+        : "~/Views/Shared/_LayoutPersonel.cshtml";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Personel Düzenle</h2>
+    </div>
+</div>
+
+<div class="section-card form-card">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group mb-3">
+            <label asp-for="AdSoyad" class="form-label"></label>
+            <input asp-for="AdSoyad" class="form-control" />
+            <span asp-validation-for="AdSoyad" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="TCKimlikNo" class="form-label"></label>
+            <input asp-for="TCKimlikNo" class="form-control" maxlength="11" />
+            <span asp-validation-for="TCKimlikNo" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="BarkodNo" class="form-label"></label>
+            <input asp-for="BarkodNo" class="form-control" />
+            <span asp-validation-for="BarkodNo" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="KayitTarihi" class="form-label"></label>
+            <input asp-for="KayitTarihi" class="form-control" />
+            <span asp-validation-for="KayitTarihi" class="text-danger small"></span>
+        </div>
+
+        <div class="form-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Vazgeç
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-lg me-1"></i>Güncelle
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

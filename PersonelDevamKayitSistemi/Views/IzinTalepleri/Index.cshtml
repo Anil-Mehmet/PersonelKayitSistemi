@@ -1,0 +1,110 @@
+﻿@model List<PersonelKayitSistemi.Models.IzinTalebi>
+
+@{
+    ViewData["Title"] = "İzin Talepleri";
+    ViewData["ActivePage"] = "IzinTalepleri";
+    Layout = Context.Session.GetString("AdminEmail") != null
+        ? "~/Views/Shared/_LayoutAdmin.cshtml"
+        : "~/Views/Shared/_LayoutPersonel.cshtml";
+
+    bool adminMi = !string.IsNullOrEmpty(Context.Session.GetString("AdminEmail"));
+}
+
+<div class="page-header page-header-with-action">
+    <div>
+        <h2 class="page-title">İzin Talepleri</h2>
+    </div>
+    @if (!adminMi)
+    {
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>Yeni Talep
+        </a>
+    }
+</div>
+
+<div class="section-card">
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Personel</th>
+                        <th>İzin Türü</th>
+                        <th>Başlangıç</th>
+                        <th>Bitiş</th>
+                        <th>Talep Tarihi</th>
+                        <th>Durum</th>
+                        @if (adminMi)
+                        {
+                            <th class="text-end">İşlemler</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var talep in Model)
+                    {
+                        <tr>
+                            <td class="fw-medium">@talep.Personel?.AdSoyad</td>
+                            <td>@talep.IzinTuru</td>
+                            <td>@talep.BaslangicTarihi.ToString("dd.MM.yyyy")</td>
+                            <td>@talep.BitisTarihi.ToString("dd.MM.yyyy")</td>
+                            <td>@talep.TalepTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                @if (talep.Durum == "Onaylandı")
+                                {
+                                    <span class="status-badge status-badge-approved">Onaylandı</span>
+                                }
+                                else if (talep.Durum == "Reddedildi")
+                                {
+                                    <span class="status-badge status-badge-rejected">Reddedildi</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-badge-pending">Beklemede</span>
+                                }
+                            </td>
+                            @if (adminMi)
+                            {
+                                <td>
+                                    @if (talep.Durum == "Beklemede")
+                                    {
+                                        <div class="table-actions">
+                                            <form asp-action="Onayla" asp-route-id="@talep.Id" method="post" class="d-inline">
+                                                <button type="submit" class="icon-action icon-action-approve" title="Onayla">
+                                                    <i class="bi bi-check-lg"></i>
+                                                </button>
+                                            </form>
+                                            <form asp-action="Reddet" asp-route-id="@talep.Id" method="post" class="d-inline">
+                                                <button type="submit" class="icon-action icon-action-delete" title="Reddet">
+                                                    <i class="bi bi-x-lg"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">-</span>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="bi bi-calendar-x"></i>
+            <p>Henüz izin talebi bulunmuyor.</p>
+            @if (!adminMi)
+            {
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg me-1"></i>İlk talebi oluştur
+                </a>
+            }
+        </div>
+    }
+</div>

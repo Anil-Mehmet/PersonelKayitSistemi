@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Personel Kayıt Sistemi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+    <!-- ÜST NAVBAR -->
+    <nav class="topbar">
+        <div class="topbar-left">
+            <button class="btn-icon d-lg-none" id="sidebarToggle" type="button" aria-label="Menüyü aç/kapat">
+                <i class="bi bi-list"></i>
+            </button>
+            <span class="topbar-title">@ViewData["Title"]</span>
+        </div>
+        <div class="topbar-right">
+            <span class="role-badge role-badge-personel">
+                <i class="bi bi-person-fill"></i> Personel
+            </span>
+        </div>
+    </nav>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-person-badge-fill"></i>
+            <span>Personel Kayıt Sistemi</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a class="sidebar-link @(ViewData["ActivePage"]?.ToString() == "Panel" ? "active" : "")" href="/Panel">
+                <i class="bi bi-speedometer2"></i>
+                <span>Ana Sayfa</span>
+            </a>
+            <a class="sidebar-link @(ViewData["ActivePage"]?.ToString() == "Personel" ? "active" : "")" href="/Personel">
+                <i class="bi bi-people"></i>
+                <span>Personel</span>
+            </a>
+            <a class="sidebar-link @(ViewData["ActivePage"]?.ToString() == "GirisCikis" ? "active" : "")" href="/GirisCikis">
+                <i class="bi bi-upc-scan"></i>
+                <span>Giriş-Çıkış</span>
+            </a>
+            <a class="sidebar-link @(ViewData["ActivePage"]?.ToString() == "Hareketler" ? "active" : "")" href="/Hareketler">
+                <i class="bi bi-clock-history"></i>
+                <span>Hareketler</span>
+            </a>
+            <a class="sidebar-link @(ViewData["ActivePage"]?.ToString() == "IzinTalepleri" ? "active" : "")" href="/IzinTalepleri">
+                <i class="bi bi-calendar-x"></i>
+                <span>İzin Talepleri</span>
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <a class="sidebar-link" href="/Admin/Login">
+                <i class="bi bi-shield-lock"></i>
+                <span>Admin Paneli</span>
+            </a>
+            <a class="sidebar-link text-danger" href="/Login/Logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Çıkış Yap</span>
+            </a>
+        </nav>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ANA İÇERİK -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        }
+
+        sidebarToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+        });
+        overlay?.addEventListener('click', closeSidebar);
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

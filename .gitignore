@@ -1,0 +1,23 @@
+## .NET / Visual Studio standart gitignore
+
+# Build sonuçları
+bin/
+obj/
+
+# Visual Studio dosyaları
+.vs/
+*.user
+*.suo
+
+# Veritabanı dosyaları (varsa)
+*.mdf
+*.ldf
+*.ndf
+
+# NuGet
+*.nupkg
+**/packages/*
+
+# Diğer
+.DS_Store
+Thumbs.db

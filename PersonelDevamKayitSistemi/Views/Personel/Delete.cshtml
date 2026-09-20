@@ -1,0 +1,63 @@
+﻿@model PersonelKayitSistemi.Models.Personel
+
+@{
+    ViewData["Title"] = "Personel Sil";
+    ViewData["ActivePage"] = "Personel";
+    Layout = Context.Session.GetString("AdminEmail") != null
+        ? "~/Views/Shared/_LayoutAdmin.cshtml"
+        : "~/Views/Shared/_LayoutPersonel.cshtml";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Personel Sil</h2>
+    </div>
+</div>
+
+<div class="section-card detail-card delete-warning-card">
+    <div class="delete-warning-banner">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>Bu personeli silmek istediğinizden emin misiniz? Kayıt kalıcı olarak silinecektir.</span>
+    </div>
+
+    <div class="detail-profile">
+        <div class="detail-avatar detail-avatar-danger">
+            <i class="bi bi-person-fill"></i>
+        </div>
+        <div>
+            <h3 class="detail-name">@Model.AdSoyad</h3>
+            <span class="barkod-chip">@(string.IsNullOrEmpty(Model.BarkodNo) ? "Barkod tanımsız" : Model.BarkodNo)</span>
+        </div>
+    </div>
+
+    <div class="detail-divider"></div>
+
+    <div class="detail-info-grid">
+        <div class="detail-info-item">
+            <span class="detail-info-label"><i class="bi bi-person-vcard"></i>TC Kimlik No</span>
+            <span class="detail-info-value">@Model.TCKimlikNo</span>
+        </div>
+
+        <div class="detail-info-item">
+            <span class="detail-info-label"><i class="bi bi-upc-scan"></i>Barkod No</span>
+            <span class="detail-info-value">@(string.IsNullOrEmpty(Model.BarkodNo) ? "-" : Model.BarkodNo)</span>
+        </div>
+
+        <div class="detail-info-item">
+            <span class="detail-info-label"><i class="bi bi-calendar-event"></i>Kayıt Tarihi</span>
+            <span class="detail-info-value">@Model.KayitTarihi.ToString("dd.MM.yyyy HH:mm")</span>
+        </div>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Vazgeç
+            </a>
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash me-1"></i>Evet, Sil
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,1049 @@
+/* =========================================================
+   PERSONEL KAYIT SÝSTEMÝ — TEMEL TASARIM
+   ========================================================= */
+
+/* ===== DEÐÝÞKENLER ===== */
+:root {
+    --bg-body: #f8f9fb;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --border-color: #eaecef;
+    --border-color-strong: #dde1e6;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --accent: #2952a3;
+    --accent-hover: #1f3f80;
+    --accent-light: #eef2fb;
+    --sidebar-width: 250px;
+    --topbar-height: 64px;
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+    --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.06);
+    --radius: 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    font-size: 14.5px;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =========================================================
+   TOPBAR + SIDEBAR (giriþ sonrasý sayfalarda kullanýlacak)
+   ========================================================= */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    height: var(--topbar-height);
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 1030;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background 0.15s ease;
+}
+
+    .btn-icon:hover {
+        background: var(--bg-body);
+        color: var(--text-primary);
+    }
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border-color);
+    background: #fff;
+    border-radius: 999px;
+    padding: 5px 12px 5px 6px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+    .user-chip:hover {
+        border-color: var(--border-color-strong);
+    }
+
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    z-index: 1040;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+}
+
+.sidebar-brand {
+    height: var(--topbar-height);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--accent);
+}
+
+    .sidebar-brand i {
+        font-size: 1.3rem;
+    }
+
+.sidebar-nav {
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+    .sidebar-link i {
+        font-size: 1.05rem;
+        width: 20px;
+        text-align: center;
+    }
+
+    .sidebar-link:hover {
+        background: var(--bg-body);
+        color: var(--text-primary);
+    }
+
+    .sidebar-link.active {
+        background: var(--accent-light);
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+.sidebar-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 12px 8px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    z-index: 1035;
+}
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    padding-top: var(--topbar-height);
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    padding: 28px;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+        .sidebar.open {
+            transform: translateX(0);
+            box-shadow: var(--shadow-md);
+        }
+
+    .topbar {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* ===== ROL ROZETÝ ===== */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.role-badge-admin {
+    background: #fef3e2;
+    color: #b45309;
+}
+
+.role-badge-personel {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+/* =========================================================
+   ORTAK BÝLEÞENLER (kart / tablo / buton — her sayfada geçerli)
+   ========================================================= */
+.card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.table {
+    font-size: 0.9rem;
+}
+
+    .table thead th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        border-bottom: 1px solid var(--border-color-strong);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
+    }
+
+.btn-primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+    .btn-primary:hover {
+        background-color: var(--accent-hover);
+        border-color: var(--accent-hover);
+    }
+
+.alert {
+    border-radius: 8px;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.alert-danger {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+/* =========================================================
+   AUTH / LOGIN SAYFASI
+   ========================================================= */
+.auth-body {
+    background: linear-gradient(180deg, #f8f9fb 0%, #eef1f6 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-wrapper {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 40px 36px;
+    width: 100%;
+    text-align: center;
+}
+
+.auth-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+}
+
+.auth-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.auth-subtitle {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+}
+
+.auth-form {
+    text-align: left;
+}
+
+    .auth-form .form-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+    }
+
+.input-with-icon {
+    position: relative;
+}
+
+    .input-with-icon i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+
+    .input-with-icon .form-control {
+        padding-left: 40px;
+        height: 44px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color-strong);
+        font-size: 0.9rem;
+    }
+
+        .input-with-icon .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+.auth-submit {
+    height: 44px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.auth-footer {
+    margin-top: 20px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* =========================================================
+   PANEL — ÝSTATÝSTÝK KARTLARI + SON HAREKETLER TABLOSU
+   ========================================================= */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+}
+
+.stat-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.stat-icon-blue {
+    background: #eef2fb;
+    color: #2952a3;
+}
+
+.stat-icon-green {
+    background: #eafaf1;
+    color: #1a9c5f;
+}
+
+.stat-icon-orange {
+    background: #fef3e2;
+    color: #b45309;
+}
+
+.stat-icon-purple {
+    background: #f3eefb;
+    color: #7c3aed;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0 0 2px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+}
+
+.section-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+    .section-card-header h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+.section-card-link {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge-in {
+    background: #eafaf1;
+    color: #1a9c5f;
+}
+
+.status-badge-out {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+/* =========================================================
+   SAYFA BAÞLIÐI (aksiyon butonlu versiyon)
+   ========================================================= */
+.page-header-with-action {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   TABLO ÝÇÝ AKSÝYON ÝKONLARI
+   ========================================================= */
+.table-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.icon-action {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    background: transparent;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.icon-action-view:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.icon-action-edit:hover {
+    background: #fef3e2;
+    color: #b45309;
+}
+
+.icon-action-delete:hover {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+/* Barkod chip */
+.barkod-chip {
+    display: inline-block;
+    background: var(--bg-body);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.82rem;
+    font-family: 'Courier New', monospace;
+    color: var(--text-secondary);
+}
+
+/* Boþ durum */
+.empty-state {
+    text-align: center;
+    padding: 48px 20px;
+}
+
+    .empty-state i {
+        font-size: 2.2rem;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+    }
+
+.btn-sm {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+}
+
+/* =========================================================
+   FORM KARTLARI (Create / Edit sayfalarý)
+   ========================================================= */
+.form-card {
+    max-width: 520px;
+}
+
+    .form-card .form-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+    }
+
+    .form-card .form-control {
+        height: 42px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color-strong);
+        font-size: 0.9rem;
+    }
+
+        .form-card .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 8px;
+}
+
+.btn-outline-secondary {
+    border-color: var(--border-color-strong);
+    color: var(--text-secondary);
+}
+
+    .btn-outline-secondary:hover {
+        background: var(--bg-body);
+        border-color: var(--border-color-strong);
+        color: var(--text-primary);
+    }
+
+/* =========================================================
+   PERSONEL DETAY KARTI
+   ========================================================= */
+.detail-card {
+    max-width: 560px;
+}
+
+.detail-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.detail-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.detail-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 6px;
+}
+
+.detail-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 20px 0;
+}
+
+.detail-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.detail-info-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg-body);
+    border-radius: 8px;
+}
+
+.detail-info-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+    .detail-info-label i {
+        color: var(--text-muted);
+    }
+
+.detail-info-value {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.btn-outline-danger {
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+    .btn-outline-danger:hover {
+        background: #fef2f2;
+        border-color: #fecaca;
+        color: #b91c1c;
+    }
+
+/* =========================================================
+   SÝLME UYARI KARTI
+   ========================================================= */
+.delete-warning-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+    .delete-warning-banner i {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+.detail-avatar-danger {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.btn-danger {
+    background-color: #dc2626;
+    border-color: #dc2626;
+}
+
+    .btn-danger:hover {
+        background-color: #b91c1c;
+        border-color: #b91c1c;
+    }
+
+/* =========================================================
+   GÝRÝÞ-ÇIKIÞ KIOSK EKRANI
+   ========================================================= */
+.kiosk-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.kiosk-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 460px;
+    text-align: center;
+}
+
+.kiosk-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+}
+
+.kiosk-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.kiosk-input {
+    height: 52px;
+    border: 1px solid var(--border-color-strong);
+    border-radius: 10px;
+    padding: 0 16px;
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+    .kiosk-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+.kiosk-submit {
+    height: 46px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.kiosk-result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    transition: opacity 0.5s ease;
+}
+
+    .kiosk-result i {
+        font-size: 1.2rem;
+    }
+
+.kiosk-result-success {
+    background: #eafaf1;
+    color: #1a9c5f;
+}
+
+.kiosk-result-warning {
+    background: #fef3e2;
+    color: #b45309;
+}
+
+.kiosk-result-danger {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.kiosk-result-neutral {
+    background: var(--bg-body);
+    color: var(--text-secondary);
+}
+
+/* =========================================================
+   HAREKETLER — FÝLTRELEME FORMU
+   ========================================================= */
+.filter-card {
+    padding: 20px;
+}
+
+.filter-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 180px;
+}
+
+    .filter-group .form-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .filter-group .form-control {
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color-strong);
+        font-size: 0.88rem;
+    }
+
+        .filter-group .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+.filter-buttons {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 8px;
+    min-width: unset;
+}
+
+    .filter-buttons .btn {
+        height: 40px;
+        white-space: nowrap;
+    }
+
+/* =========================================================
+   ADMIN LOGIN VARYASYONU
+   ========================================================= */
+.auth-logo-admin {
+    background: #f3eefb;
+    color: #7c3aed;
+}
+
+.auth-submit-admin {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+    .auth-submit-admin:hover {
+        background-color: #6d28d9;
+        border-color: #6d28d9;
+    }
+
+.auth-back-link {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+    .auth-back-link:hover {
+        color: var(--accent);
+    }
+
+/* =========================================================
+   ADMIN TEMA VARYASYONU
+   ========================================================= */
+.sidebar-brand-admin {
+    color: #7c3aed;
+}
+
+.admin-theme .sidebar-link.active {
+    background: #f3eefb;
+    color: #7c3aed;
+}
+
+.stat-icon-admin-purple {
+    background: #f3eefb;
+    color: #7c3aed;
+}
+
+/* =========================================================
+   ADMIN TEMA — GENEL MOR VURGU GEÇÝÞÝ
+   ========================================================= */
+
+/* Sað üstteki "Admin" rozeti */
+.admin-theme .role-badge-admin {
+    background: #f3eefb;
+    color: #7c3aed;
+}
+
+/* Admin panelindeki tüm ana butonlar (Yeni Kayýt, Kaydet, Filtrele vb.) */
+.admin-theme .btn-primary {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+    .admin-theme .btn-primary:hover {
+        background-color: #6d28d9;
+        border-color: #6d28d9;
+    }
+
+/* Input focus rengi de mora dönsün (form alanlarýna týklayýnca) */
+.admin-theme .form-control:focus,
+.admin-theme .kiosk-input:focus {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px #f3eefb !important;
+}
+
+/* =========================================================
+   ÝZÝN TALEPLERÝ — DURUM ROZETLERÝ + FORM ÝKÝ SÜTUN
+   ========================================================= */
+.status-badge-pending {
+    background: #fef3e2;
+    color: #b45309;
+}
+
+.status-badge-approved {
+    background: #eafaf1;
+    color: #1a9c5f;
+}
+
+.status-badge-rejected {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.form-row-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.icon-action-approve {
+    border: none;
+    background: transparent;
+}
+
+    .icon-action-approve:hover {
+        background: #eafaf1;
+        color: #1a9c5f;
+    }
+
+/* form-card select/textarea da form-control stilini alsýn */
+.form-card select.form-control,
+.form-card textarea.form-control {
+    height: auto;
+    padding: 8px 12px;
+}
